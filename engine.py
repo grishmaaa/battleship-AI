@@ -66,8 +66,39 @@ class Player:
         indexes = ["-" if i not in self.indexes else "x" for i in range(100)]
         for row in range(10):
             print(" ".join(indexes[(row - 1) * 10:row * 10]))
+
+
 # testing 2
 # p=Player()
 # p.show_ships() //testing-3
 # for ship in p.ships:
 #     print(ship.indexes)
+
+class Game:
+    def __init__(self):
+        self.player1 = Player()
+        self.player2 = Player()
+        self.player1_turn = True
+        self.over = False
+
+    def make_move(self, i):
+        player = self.player1 if self.player1_turn else self.player2
+        opponent = self.player2 if self.player1_turn else self.player1
+
+        # set "M" for miss and "H" for hit
+        if i in opponent.indexes:
+            player.search[i] = "H"
+            for ship in opponent.ships:
+                sunk = True
+                for i in ship.indexes:
+                    if player.search[i] == "U":
+                        sunk = False
+                        break
+                if sunk:
+                    for i in ship.indexes:
+                        player.search[i] = "S"
+        else:
+            player.search[i] = "M"
+
+        # change the active team
+        # self.player1_turn = not self.player1_turn
