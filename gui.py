@@ -16,6 +16,16 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 GREY = (40, 50, 60)
 WHITE = (255, 250, 250)
 
+
+# grid function
+def draw_grid(left=0, top=0):
+    for i in range(100):
+        x = left + i % 10 * SQ_SIZE
+        y = top + i // 10 * SQ_SIZE
+        square = pygame.Rect(x, y, SQ_SIZE, SQ_SIZE)
+        pygame.draw.rect(SCREEN, WHITE, square, width=3)
+
+
 # pygame loop
 animating = True
 pausing = False
@@ -39,6 +49,17 @@ while animating:
             if event.key == pygame.K_SPACE:
                 pausing = not pausing
     if not pausing:
+
+        # draw background
         SCREEN.fill(GREY)
+
+        # draw search grids
+        draw_grid()
+        draw_grid(left=(WIDTH - H_MARGIN)//2 + H_MARGIN, top=(HEIGHT-V_MARGIN)//2+V_MARGIN)
+
+        # draw position grids
+        draw_grid(left=(WIDTH - H_MARGIN) // 2 + H_MARGIN)
+        draw_grid(top=(HEIGHT-V_MARGIN)//2+V_MARGIN)
+
         # displays
         pygame.display.flip()
