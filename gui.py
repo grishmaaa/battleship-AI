@@ -82,6 +82,11 @@ while animating:
                 col = x // SQ_SIZE
                 index = row * 10 + col
                 game.make_move(index)
+            elif not game.player1_turn and x > SQ_SIZE * 10 and y > SQ_SIZE * 10 + V_MARGIN:
+                row = (y - SQ_SIZE * 10 - V_MARGIN) // SQ_SIZE
+                col = (x - SQ_SIZE * 10 - H_MARGIN) // SQ_SIZE
+                index = row * 10 + col
+                game.make_move(index)
 
         # user presses key on keyword
         if event.type == pygame.KEYDOWN:

@@ -101,4 +101,4 @@ class Game:
             player.search[i] = "M"
 
         # change the active team
-        # self.player1_turn = not self.player1_turn
+        self.player1_turn = not self.player1_turn
