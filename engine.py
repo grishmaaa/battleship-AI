@@ -118,9 +118,9 @@ class Game:
         if not hit:
             self.player1_turn = not self.player1_turn
 
-        # switch between human and computer turns
-        if (self.human1 and not self.human2) or (not self.human1 and self.human2):
-            self.computer_turn = not self.computer_turn
+            # switch between human and computer turns
+            if (self.human1 and not self.human2) or (not self.human1 and self.human2):
+                self.computer_turn = not self.computer_turn
 
     def random_ai(self):
         search = self.player1.search if self.player1_turn else self.player2.search
@@ -128,3 +128,33 @@ class Game:
         if len(unknown) > 0:
             random_index = random.choice(unknown)
             self.make_move((random_index))
+
+    def basic_ai(self):
+        # set up
+        search = self.player1.search if self.player1_turn else self.player2.search
+        unknown = [i for i, square in enumerate(search) if square == "U"]
+        hits = [i for i, square in enumerate(search) if square == "H"]
+
+        # search in local neighborhood
+        unknown_with_neighbors_hits1 = []
+        unknown_with_neighbors_hits2 = []
+        for u in unknown:
+            if u+1 in hits or u-1 in hits or u-10 in hits or u+10 in hits:
+                unknown_with_neighbors_hits1.append(u)
+            if u+2 in hits or u-2 in hits or u+20 in hits or u-20 in hits:
+                unknown_with_neighbors_hits2.append(u)
+
+        # pick "U" square with direct and level_2_neighbor both marked as "H"
+        for u in unknown:
+            if u in unknown_with_neighbors_hits1 and u in unknown_with_neighbors_hits2:
+                self.make_move(u)
+                return
+        # pick "U" square that has neighbor marked as "H"
+        if len(unknown_with_neighbors_hits1) > 0:
+            self.make_move(random.choice(unknown_with_neighbors_hits1))
+            return
+        # checker board pattern
+
+
+        # random bmoves
+        self.random_ai()

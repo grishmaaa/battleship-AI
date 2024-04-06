@@ -17,7 +17,6 @@ INDENT = 10
 HUMAN1 = True
 HUMAN2 = False
 
-
 # COLOR
 WHITE = (255, 250, 250)
 GREEN = (50, 200, 150)
@@ -79,14 +78,14 @@ while animating:
         if event.type == pygame.QUIT:
             animating = False
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and not game.over:
             x, y = pygame.mouse.get_pos()
-            if not game.over and game.player1_turn and x < SQ_SIZE * 10 and y < SQ_SIZE * 10:
+            if game.player1_turn and x < SQ_SIZE * 10 and y < SQ_SIZE * 10:
                 row = y // SQ_SIZE
                 col = x // SQ_SIZE
                 index = row * 10 + col
                 game.make_move(index)
-            elif not game.over and not game.player1_turn and x > WIDTH - SQ_SIZE * 10 and y > SQ_SIZE * 10 + V_MARGIN:
+            elif not game.player1_turn and x > WIDTH - SQ_SIZE * 10 and y > SQ_SIZE * 10 + V_MARGIN:
                 row = (y - SQ_SIZE * 10 - V_MARGIN) // SQ_SIZE
                 col = (x - SQ_SIZE * 10 - H_MARGIN) // SQ_SIZE
                 index = row * 10 + col
@@ -113,7 +112,8 @@ while animating:
 
         # draw search grids
         draw_grid(game.player1, search=True)
-        draw_grid(game.player2, search=True, left=(WIDTH - H_MARGIN) // 2 + H_MARGIN, top=(HEIGHT - V_MARGIN) // 2 + V_MARGIN)
+        draw_grid(game.player2, search=True, left=(WIDTH - H_MARGIN) // 2 + H_MARGIN,
+                  top=(HEIGHT - V_MARGIN) // 2 + V_MARGIN)
 
         # draw position grids
         draw_grid(game.player1, left=(WIDTH - H_MARGIN) // 2 + H_MARGIN)
@@ -123,15 +123,16 @@ while animating:
         draw_ships(game.player1, top=(HEIGHT - V_MARGIN) // 2 + V_MARGIN)
         draw_ships(game.player2, left=(WIDTH - H_MARGIN) // 2 + H_MARGIN)
 
-        #COMPUTER MOVES
+        # COMPUTER MOVES
         if not game.over and game.computer_turn:
-            game.random_ai()
+            game.basic_ai()
 
         # game over message
         if game.over:
             text = "player" + str(game.result) + " wins!"
-            textbox = myfont.render(text,False,GREY,WHITE)
-            SCREEN.blit(textbox, (WIDTH//2 - 240, HEIGHT//2 - 50))
+            textbox = myfont.render(text, False, GREY, WHITE)
+            SCREEN.blit(textbox, (WIDTH // 2 - 240, HEIGHT // 2 - 50))
 
         # displays
+        pygame.time.wait(100)
         pygame.display.flip()
