@@ -139,9 +139,9 @@ class Game:
         unknown_with_neighbors_hits1 = []
         unknown_with_neighbors_hits2 = []
         for u in unknown:
-            if u+1 in hits or u-1 in hits or u-10 in hits or u+10 in hits:
+            if u + 1 in hits or u - 1 in hits or u - 10 in hits or u + 10 in hits:
                 unknown_with_neighbors_hits1.append(u)
-            if u+2 in hits or u-2 in hits or u+20 in hits or u-20 in hits:
+            if u + 2 in hits or u - 2 in hits or u + 20 in hits or u - 20 in hits:
                 unknown_with_neighbors_hits2.append(u)
 
         # pick "U" square with direct and level_2_neighbor both marked as "H"
@@ -153,8 +153,17 @@ class Game:
         if len(unknown_with_neighbors_hits1) > 0:
             self.make_move(random.choice(unknown_with_neighbors_hits1))
             return
-        # checker board pattern
 
+        # checker board pattern
+        checker_board = []
+        for u in unknown:
+            row = u // 10
+            col = u % 10
+            if (row + col) % 2 ==0:
+                checker_board.append(u)
+        if len(checker_board) > 0:
+            self.make_move(random.choice(checker_board))
+            return
 
         # random bmoves
         self.random_ai()

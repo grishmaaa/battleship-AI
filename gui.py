@@ -14,7 +14,7 @@ WIDTH = SQ_SIZE * 10 * 2 + H_MARGIN
 HEIGHT = SQ_SIZE * 10 * 2 + V_MARGIN
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 INDENT = 10
-HUMAN1 = True
+HUMAN1 = False
 HUMAN2 = False
 
 # COLOR
@@ -125,7 +125,11 @@ while animating:
 
         # COMPUTER MOVES
         if not game.over and game.computer_turn:
-            game.basic_ai()
+            # game.basic_ai()
+            if game.player1_turn:
+                game.basic_ai()
+            else:
+                game.basic_ai()
 
         # game over message
         if game.over:
